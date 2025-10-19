@@ -1,0 +1,41 @@
+#define LDR A0
+#define RAIN A1
+#define HEADLIGHT 9
+#define WIPER 8
+
+int lightValue, rainValue;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(HEADLIGHT, OUTPUT);
+  pinMode(WIPER, OUTPUT);
+  pinMode(LDR, INPUT);
+  pinMode(RAIN, INPUT);
+  Serial.println("Smart EV Lighting & Wiper System");
+}
+
+void loop() {
+  lightValue = analogRead(LDR);
+  rainValue = analogRead(RAIN);
+
+  Serial.print("Light: ");
+  Serial.print(lightValue);
+  Serial.print("  Rain: ");
+  Serial.println(rainValue);
+
+  // Headlight ON when it's dark
+  if(lightValue < 300) {
+    digitalWrite(HEADLIGHT, HIGH);
+  } else {
+    digitalWrite(HEADLIGHT, LOW);
+  }
+
+  // Wiper ON when rain is detected
+  if(rainValue < 500) {
+    digitalWrite(WIPER, HIGH);
+    delay(2000);
+    digitalWrite(WIPER, LOW);
+  }
+
+  delay(500);
+}
